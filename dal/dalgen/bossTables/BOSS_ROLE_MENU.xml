@@ -1,0 +1,75 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="BOSS_ROLE_MENU" physicalName="BOSS_ROLE_MENU" remark="BOSS_ROLE_MENU">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:BOSS_ROLE_MENU">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO BOSS_ROLE_MENU(
+            MENU_ID
+            ,ROLE_ID
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES(
+            #{menuId,jdbcType=INTEGER}
+            , #{roleId,jdbcType=INTEGER}
+            , sysdate()
+            , sysdate()
+        )
+    </operation>
+
+    <operation name="update" paramtype="object" remark="更新表:BOSS_ROLE_MENU">
+        UPDATE BOSS_ROLE_MENU
+        SET
+            MENU_ID         = #{menuId,jdbcType=INTEGER}
+            ,ROLE_ID         = #{roleId,jdbcType=INTEGER}
+            ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+            ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+        WHERE
+            ID              = #{id,jdbcType=INTEGER}
+    </operation>
+
+    <operation name="deleteByPrimary" multiplicity="one" remark="根据主键删除数据:BOSS_ROLE_MENU">
+        DELETE FROM
+            BOSS_ROLE_MENU
+        WHERE
+            ID = #{id,jdbcType=INTEGER}
+    </operation>
+
+    <operation name="deleteByMenuAndRole" multiplicity="one" remark="根据主键删除数据:BOSS_ROLE_MENU">
+        DELETE FROM
+        BOSS_ROLE_MENU
+        WHERE 1=1
+        and MENU_ID in
+        <foreach collection="list" item="menuId" index="index" open="(" close=")" separator=",">
+            #{menuId}
+        </foreach>
+        and ROLE_ID = #{roleId,jdbcType=INTEGER}
+    </operation>
+
+    <operation name="getByPrimary" multiplicity="one" remark="根据主键获取数据:BOSS_ROLE_MENU">
+        SELECT *
+        FROM BOSS_ROLE_MENU
+        WHERE
+            ID = #{id,jdbcType=INTEGER}
+    </operation>
+
+    <operation name="getBaseMenusByRoleId" multiplicity="many" resulttype="java.lang.Integer" remark="根据角色id获取基础的菜单列表:BOSS_ROLE_MENU">
+        SELECT n.menu_id as menuId
+        FROM BOSS_ROLE_MENU n
+        WHERE
+        exists(select '' from BOSS_MENU m where m.id=n.menu_id and
+        m.isvalid='1' and m.url is not null)
+        and role_id=#{roleId,jdbcType=INTEGER}
+    </operation>
+
+    <operation name="getMenusByRoleId" multiplicity="many" resulttype="java.lang.Integer" remark="根据角色id获取所有菜单列表数据:BOSS_ROLE_MENU">
+        SELECT n.menu_id as menuId
+        FROM BOSS_ROLE_MENU n
+        WHERE
+        exists(select '' from BOSS_MENU m where m.id=n.menu_id and m.isvalid='1')
+        and role_id=#{roleId,jdbcType=INTEGER}
+    </operation>
+</table>

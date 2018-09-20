@@ -1,0 +1,19 @@
+ {  
+      "name" : "boss",
+      "version": "0.1.0",  
+      "title": "boss接口文档",
+      "url" : "http://127.0.0.1:8088",  
+      "sampleUrl":  "http://101.37.129.193",  
+      "description": "基金销售内部接口文档",  
+      "template": {  
+        "forceLanguage" : "zh_cn",  
+        "withCompare": true,  
+        "withGenerator": true  
+      },
+      "header": {
+        "title": "接口概述"
+      },
+      "footer": {
+        "title": "帮助"
+      }
+    }   

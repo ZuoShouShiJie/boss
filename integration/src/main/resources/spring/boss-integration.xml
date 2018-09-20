@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.alibabatech.com/schema/dubbo
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!--   <bean id="boss.CifServiceClient" class="com.maiziyun.boss.integration.cif.impl.CifServiceClientImpl">
+           <property name="userInfoService" ref="boss.UserInfoService"/>
+           <property name="userRiskService" ref="boss.UserRiskService"/>
+           <property name="userManagerService" ref="boss.UserManagerService"/>
+       </bean>-->
+    <dubbo:reference interface="com.maiziyun.cif.facade.UserInfoService" id="boss.UserInfoService"/>
+    <dubbo:reference interface="com.maiziyun.cif.facade.UserRiskService" id="boss.UserRiskService"/>
+    <dubbo:reference interface="com.maiziyun.cif.facade.UserManagerService" id="boss.UserManagerService"/>
+
+    <!--    <bean id="boss.BcdcServiceClient" class="com.maiziyun.boss.integration.bcdc.impl.BcdcServiceClientImpl">
+            <property name="signUserCardRelationService" ref="boss.SignUserCardRelationService"/>
+        </bean>-->
+    <dubbo:reference interface="com.maiziyun.payment.bcdc.facade.SignUserCardRelationService"
+                     id="boss.SignUserCardRelationService"/>
+
+
+    <!-- <bean id="boss.FtsServiceClient" class="com.maiziyun.boss.integration.fts.impl.FtsServiceClientImpl">
+         <property name="coreQueryService" ref="boss.CoreQueryService"/>
+     </bean>-->
+    <dubbo:reference interface="com.maiziyun.fund.trade.facade.CoreQueryService" id="boss.CoreQueryService"/>
+
+    <!-- <bean id="boss.ProductServiceClient" class="com.maiziyun.boss.integration.product.impl.ProductServiceClientImpl">
+         <property name="productQueryService" ref="boss.ProductQueryService"/>
+         <property name="productAttrService" ref="boss.ProductAttrService"/>
+     </bean>-->
+    <!--    <dubbo:reference interface="com.maiziyun.product.facade.ProductQueryService" id="boss.ProductQueryService"/>-->
+
+
+    <!--基金产品-->
+    <bean id="boss.FundServiceClient" class="com.maiziyun.boss.integration.product.impl.FundServiceClientImpl">
+        <property name="productAttrService" ref="boss.ProductAttrService"/>
+    </bean>
+    <dubbo:reference interface="com.maiziyun.product.facade.ProductAttrService" id="boss.ProductAttrService"/>
+
+    <!--广告位-->
+    <bean id="boss.financeRunClient" class="com.maiziyun.boss.integration.finance.impl.FinanceRunClientImpl">
+        <property name="advertisementInfoManagerService" ref="boss.advertisementInfoManagerService"></property>
+        <property name="positionManagerService" ref="boss.positionManagerService"></property>
+
+    </bean>
+    <dubbo:reference interface="com.maiziyun.cms.facade.AdvertisementInfoManagerService"
+                     id="boss.advertisementInfoManagerService"></dubbo:reference>
+    <dubbo:reference interface="com.maiziyun.cms.facade.PositionManagerService"
+                     id="boss.positionManagerService"></dubbo:reference>
+
+    <!--公告管理-->
+    <bean id="boss.noticeClient" class="com.maiziyun.boss.integration.finance.impl.NoticeClientImpl">
+        <property name="noticeService" ref="boss.noticeManagerService"></property>
+
+    </bean>
+    <dubbo:reference interface="com.maiziyun.mdc.facade.NoticeManagerService"
+                     id="boss.noticeManagerService"></dubbo:reference>
+
+    <!--麦田管理 -->
+    <bean id="boss.cornClient" class="com.maiziyun.boss.integration.finance.impl.CornfieldClientImpl">
+        <property name="taskConfigService" ref="boss.cornManagerService"></property>
+
+    </bean>
+    <dubbo:reference interface="com.maiziyun.acs.facade.TaskConfigService"
+                     id="boss.cornManagerService"></dubbo:reference>
+
+    <!-- 组合列表管理-->
+    <bean id="boss.fofListClient" class="com.maiziyun.boss.integration.product.impl.FofListServiceClientImpl">
+        <property name="productFOFInfoService" ref="boss.fofListServiceManager"></property>
+
+    </bean>
+    <dubbo:reference interface="com.maiziyun.product.facade.ProductFOFInfoService"
+                     id="boss.fofListServiceManager"></dubbo:reference>
+
+    <!--网贷列表管理-->
+    <bean id="boss.P2PLoanClient" class="com.maiziyun.boss.integration.product.impl.P2PLoanServiceClientImpl">
+        <property name="productP2PInfoService" ref="boss.P2PLoanListService"></property>
+    </bean>
+    <dubbo:reference interface="com.maiziyun.product.facade.ProductP2PInfoService"
+                     id="boss.P2PLoanListService"></dubbo:reference>
+
+    <!--首页产品位置-->
+    <bean id="boss.HomePageSiteClient" class="com.maiziyun.boss.integration.product.impl.HomePageSiteClientImpl">
+        <property name="productAttrService" ref="boss.HomePageProductSiteService"></property>
+
+    </bean>
+
+    <dubbo:reference interface="com.maiziyun.product.facade.ProductAttrService"
+                     id="boss.HomePageProductSiteService"></dubbo:reference>
+
+
+    <!--交易所-->
+    <bean id="boss.JYSMngClient" class="com.maiziyun.boss.integration.jysmng.impl.JYSMngServiceClientImpl">
+        <property name="exchangeService" ref="boss.JYSMngExchangeService"></property>
+        <property name="exchangeManagerService" ref="boss.JYSMngMngService"></property>
+        <property name="trdCoreQueryService" ref="boss.JYSMngTrdService"></property>
+        <property name="transReceiverService" ref="boss.JYSMngMgwService"></property>
+        <property name="userInfoService" ref="boss.UserInfoServices"></property>
+    </bean>
+    <dubbo:reference interface="com.maiziyun.product.facade.ExchangeSelectedService"
+                     id="boss.JYSMngExchangeService"></dubbo:reference>
+    <dubbo:reference interface="com.maiziyun.product.facade.ExchangeManagerService"
+                     id="boss.JYSMngMngService"></dubbo:reference>
+    <dubbo:reference interface="com.maiziyun.fund.trade.facade.CoreQueryService"
+                     id="boss.JYSMngTrdService"></dubbo:reference>
+    <dubbo:reference interface="com.maiziyun.mgw.facade.TransReceiverService"
+                     id="boss.JYSMngMgwService"></dubbo:reference>
+    <dubbo:reference interface="com.maiziyun.cif.facade.UserInfoService" id="boss.UserInfoServices"></dubbo:reference>
+
+    <!--固收组合-->
+    <bean id="boss.FundGroupClient" class="com.maiziyun.boss.integration.group.impl.FundGroupServiceClientImpl">
+        <property name="productGroupManagerService" ref="boss.ProductGroupManagerService"></property>
+        <property name="exchangeSelectedService" ref="boss.ExchangeSelectedService"></property>
+        <property name="productSelectedService" ref="boss.ProductSelectedService"></property>
+        <property name="productGroupSelectedService" ref="boss.ProductGroupSelectedService"></property>
+    </bean>
+    <dubbo:reference interface="com.maiziyun.product.facade.ProductGroupManagerService"
+                     id="boss.ProductGroupManagerService"></dubbo:reference>
+    <dubbo:reference interface="com.maiziyun.product.facade.ExchangeSelectedService"
+                     id="boss.ExchangeSelectedService"></dubbo:reference>
+    <dubbo:reference interface="com.maiziyun.product.facade.ProductSelectedService"
+                     id="boss.ProductSelectedService"></dubbo:reference>
+    <dubbo:reference interface="com.maiziyun.product.facade.ProductGroupSelectedService"
+                     id="boss.ProductGroupSelectedService"></dubbo:reference>
+
+
+
+
+    <dubbo:reference interface="com.maiziyun.fmd.facade.ChannelPayConfigService" id="boss.ChannelPayConfigService"/>
+
+
+    <dubbo:reference interface="com.maiziyun.product.facade.LocalCacheRefreshService"
+                     id="boss.pcs.LocalCacheRefreshService"/>
+    <dubbo:reference interface="com.maiziyun.cif.facade.LocalCacheRefreshService"
+                     id="boss.cif.LocalCacheRefreshService"/>
+    <dubbo:reference interface="com.maiziyun.fmd.facade.LocalCacheRefreshService"
+                     id="boss.fmd.LocalCacheRefreshService"/>
+    <dubbo:reference interface="com.maiziyun.fund.fadc.facade.LocalCacheRefreshService"
+                     id="boss.fadc.LocalCacheRefreshService"/>
+    <dubbo:reference interface="com.maiziyun.merchant.mcm.facade.LocalCacheRefreshService"
+                     id="boss.mcm.LocalCacheRefreshService"/>
+    <dubbo:reference interface="com.maiziyun.payment.fxs.facade.LocalCacheRefreshService"
+                     id="boss.fxs.LocalCacheRefreshService"/>
+
+    <bean id="boss.LocalCacheClient" class="com.maiziyun.boss.integration.cache.impl.LocalCacheClientImpl">
+        <property name="localCacheRefreshServiceMap">
+            <map>
+                <entry key="Product" value-ref="boss.pcs.LocalCacheRefreshService"></entry>
+                <entry key="Cif" value-ref="boss.cif.LocalCacheRefreshService"></entry>
+                <entry key="Fmd" value-ref="boss.fmd.LocalCacheRefreshService"></entry>
+                <entry key="FundFadc" value-ref="boss.fadc.LocalCacheRefreshService"></entry>
+                <entry key="MerchantMcm" value-ref="boss.mcm.LocalCacheRefreshService"></entry>
+                <entry key="PaymentFxs" value-ref="boss.fxs.LocalCacheRefreshService"></entry>
+            </map>
+        </property>
+
+    </bean>
+</beans>

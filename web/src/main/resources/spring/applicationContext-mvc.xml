@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+
+
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <description>Spring-web MVC配置</description>
+
+    <context:property-placeholder
+            file-encoding="UTF-8"
+            ignore-unresolvable="true"
+            ignore-resource-not-found="true" location=" file:${user.home}/config/maiziyun/boss/uploadFile.properties"/>
+
+
+
+    <context:component-scan base-package="com.maiziyun.boss.web.filter"/>
+
+    <context:component-scan base-package="com.maiziyun.boss">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+    </context:component-scan>
+
+    <!-- 文件上传 -->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 设置上传文件的最大尺寸为5MB -->
+        <property name="maxUploadSize">
+            <value>5242880</value>
+        </property>
+    </bean>
+
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                        <value>text/plain;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!-- velocity环境配置 -->
+    <bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+        <!-- velocity配置文件路径 -->
+        <property name="configLocation" value="classpath:config/velocity.properties"/>
+        <!-- velocity模板路径 -->
+        <property name="resourceLoaderPath" value="/WEB-INF/easyVms/"/>
+    </bean>
+
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
+        <property name="cache" value="true"/>
+        <property name="prefix" value="/"/>
+        <property name="suffix" value=".vm"/>
+        <property name="contentType">
+            <value>text/html;charset=utf-8</value>
+        </property>
+        <property name="layoutUrl" value="commons/layout.vm"/>
+        <property name="allowSessionOverride" value="true"/>
+        <property name="allowRequestOverride" value="true"/>
+        <property name="exposeSessionAttributes" value="true"/>
+        <property name="requestContextAttribute" value="rc"/>
+        <property name="exposeRequestAttributes" value="true"/>
+    </bean>
+
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
+
+
+    <bean id="boss.methodTraceInterceptor" class="com.solar.framework.monitor.spring.aop.MethodTraceInterceptor"/>
+    <!--拦截controller请求，生成traceNo-->
+    <aop:aspectj-autoproxy/>
+    <aop:config>
+         <aop:pointcut id="boss.methodPointcut" expression="execution(* com.maiziyun.boss.web.controller..*.*(..))"/>
+         <aop:advisor advice-ref="boss.methodTraceInterceptor" pointcut-ref="boss.methodPointcut"/>
+    </aop:config>
+
+
+    <!--Interceptor-->
+    <mvc:interceptors>
+        <!-- 国际化操作拦截器 -->
+        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>
+
+        <!--<bean class="com.fcloud.mobile.web.interceptor.handler.AuthInterceptorHandler"></bean>-->
+
+        <!--<mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.maiziyun.boss.web.interceptor.CommonInterceptor">
+            </bean>
+        </mvc:interceptor>-->
+
+    </mvc:interceptors>
+    <!--security的引用-->
+</beans>

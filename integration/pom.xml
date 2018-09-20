@@ -1,0 +1,134 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.maiziyun.boss</groupId>
+        <artifactId>boss-parent</artifactId>
+        <version>cz-1.0.4-SNAPSHOT</version>
+    </parent>
+
+    <groupId>com.maiziyun.boss</groupId>
+    <artifactId>boss-integration</artifactId>
+    <packaging>jar</packaging>
+
+    <name>${project.artifactId}</name>
+    <url>http://maven.apache.org</url>
+
+    <dependencies>
+
+        <!--本地引用-->
+        <dependency>
+            <groupId>com.maiziyun.boss</groupId>
+            <artifactId>boss-facade</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.maiziyun.cif</groupId>
+            <artifactId>cif-facade</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.maiziyun.payment</groupId>
+            <artifactId>bcdc-facade</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.maiziyun.merchant</groupId>
+            <artifactId>mcm-facade</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.maiziyun.fmd</groupId>
+            <artifactId>fmd-facade</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.maiziyun.payment</groupId>
+            <artifactId>cardbin-facade</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.maiziyun.payment</groupId>
+            <artifactId>ccdc-facade</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.maiziyun.fund</groupId>
+            <artifactId>fadc-facade</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.maiziyun.payment</groupId>
+            <artifactId>fxs-facade</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.maiziyun.product</groupId>
+            <artifactId>product-facade</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.maiziyun.fmgw</groupId>
+            <artifactId>fmgw-facade</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.maiziyun.acs</groupId>
+            <artifactId>acs-facade</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.maiziyun.cms</groupId>
+            <artifactId>cms-facade</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.maiziyun.mdc</groupId>
+            <artifactId>mdc-facade</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.maiziyun.fund</groupId>
+            <artifactId>trade-facade</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.maiziyun</groupId>
+            <artifactId>common</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+
+
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.solar.framework</groupId>
+            <artifactId>framework-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

@@ -1,0 +1,64 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="BOSS_EMPLOYEE" physicalName="BOSS_EMPLOYEE" remark="BOSS_EMPLOYEE">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:BOSS_EMPLOYEE">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO BOSS_EMPLOYEE(
+            ID
+            ,AGE
+            ,SEX
+            ,STATUS
+            ,ADDRESS
+            ,NICK_NAME
+            ,USER_NAME
+            ,CREATE_TIME
+            ,UPDATE_TIME
+            ,ENGLISH_NAME
+        )VALUES(
+             #{id,jdbcType=INTEGER}
+            , #{age,jdbcType=INTEGER}
+            , #{sex,jdbcType=VARCHAR}
+            , #{status,jdbcType=INTEGER}
+            , #{address,jdbcType=VARCHAR}
+            , #{nickName,jdbcType=VARCHAR}
+            , #{userName,jdbcType=VARCHAR}
+            , #{createTime,jdbcType=TIMESTAMP}
+            , #{updateTime,jdbcType=TIMESTAMP}
+            , #{englishName,jdbcType=VARCHAR}
+        )
+    </operation>
+
+    <operation name="update" paramtype="object" remark="更新表:BOSS_EMPLOYEE">
+        UPDATE BOSS_EMPLOYEE
+        SET
+            AGE             = #{age,jdbcType=INTEGER}
+            ,SEX             = #{sex,jdbcType=VARCHAR}
+            ,STATUS          = #{status,jdbcType=INTEGER}
+            ,ADDRESS         = #{address,jdbcType=VARCHAR}
+            ,NICK_NAME       = #{nickName,jdbcType=VARCHAR}
+            ,USER_NAME       = #{userName,jdbcType=VARCHAR}
+            ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+            ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+            ,ENGLISH_NAME    = #{englishName,jdbcType=VARCHAR}
+        WHERE
+            ID              = #{id,jdbcType=INTEGER}
+    </operation>
+
+    <operation name="deleteByPrimary" multiplicity="one" remark="根据主键删除数据:BOSS_EMPLOYEE">
+        DELETE FROM
+            BOSS_EMPLOYEE
+        WHERE
+            ID = #{id,jdbcType=INTEGER}
+    </operation>
+
+    <operation name="getByPrimary" multiplicity="one" remark="根据主键获取数据:BOSS_EMPLOYEE">
+        SELECT *
+        FROM BOSS_EMPLOYEE
+        WHERE
+            ID = #{id,jdbcType=INTEGER}
+    </operation>
+</table>

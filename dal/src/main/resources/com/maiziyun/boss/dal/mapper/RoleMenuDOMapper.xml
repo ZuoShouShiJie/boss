@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.maiziyun.boss.dal.mapper.RoleMenuDOMapper">
+    <!-- 自动生成,请修改 BOSS_ROLE_MENU.xml -->
+    <resultMap id="BaseResultMap"  type="com.maiziyun.boss.dal.dataobject.RoleMenuDO">
+        <id column="ID" property="id" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="MENU_ID" property="menuId" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="ROLE_ID" property="roleId" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,MENU_ID,ROLE_ID,CREATE_TIME,UPDATE_TIME
+    </sql>
+
+
+    <!--插入表:BOSS_ROLE_MENU-->
+    <insert id="insert" >
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO BOSS_ROLE_MENU(
+            MENU_ID
+            ,ROLE_ID
+            ,CREATE_TIME
+            ,UPDATE_TIME
+        )VALUES(
+            #{menuId,jdbcType=INTEGER}
+            , #{roleId,jdbcType=INTEGER}
+            , sysdate()
+            , sysdate()
+        )
+    </insert>
+
+    <!--更新表:BOSS_ROLE_MENU-->
+    <update id="update" >
+        UPDATE /*MS-BOSS-ROLE-MENU-UPDATE*/ BOSS_ROLE_MENU
+        SET
+            MENU_ID         = #{menuId,jdbcType=INTEGER}
+            ,ROLE_ID         = #{roleId,jdbcType=INTEGER}
+            ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+            ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+        WHERE
+            ID              = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!--根据主键删除数据:BOSS_ROLE_MENU-->
+    <delete id="deleteByPrimary" >
+        DELETE /*MS-BOSS-ROLE-MENU-DELETEBYPRIMARY*/ FROM
+            BOSS_ROLE_MENU
+        WHERE
+            ID = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <!--根据主键删除数据:BOSS_ROLE_MENU-->
+    <delete id="deleteByMenuAndRole" >
+        DELETE /*MS-BOSS-ROLE-MENU-DELETEBYMENUANDROLE*/ FROM
+        BOSS_ROLE_MENU
+        WHERE 1=1
+        and MENU_ID in
+        <foreach collection="list" item="menuId" index="index" open="(" close=")" separator=",">
+            #{menuId}
+        </foreach>
+        and ROLE_ID = #{roleId,jdbcType=INTEGER}
+    </delete>
+
+    <!--根据主键获取数据:BOSS_ROLE_MENU-->
+    <select id="getByPrimary" resultMap="BaseResultMap">
+        SELECT /*MS-BOSS-ROLE-MENU-GETBYPRIMARY*/  <include refid="Base_Column_List" />
+        FROM BOSS_ROLE_MENU
+        WHERE
+            ID = #{id,jdbcType=INTEGER}
+    </select>
+
+    <!--根据角色id获取基础的菜单列表:BOSS_ROLE_MENU-->
+    <select id="getBaseMenusByRoleId" resultType="java.lang.Integer">
+        SELECT n.menu_id as menuId
+        FROM BOSS_ROLE_MENU n
+        WHERE
+        exists(select /*MS-BOSS-ROLE-MENU-GETBASEMENUSBYROLEID*/ '' from BOSS_MENU m where m.id=n.menu_id and
+        m.isvalid='1' and m.url is not null)
+        and role_id=#{roleId,jdbcType=INTEGER}
+    </select>
+
+    <!--根据角色id获取所有菜单列表数据:BOSS_ROLE_MENU-->
+    <select id="getMenusByRoleId" resultType="java.lang.Integer">
+        SELECT n.menu_id as menuId
+        FROM BOSS_ROLE_MENU n
+        WHERE
+        exists(select /*MS-BOSS-ROLE-MENU-GETMENUSBYROLEID*/ '' from BOSS_MENU m where m.id=n.menu_id and m.isvalid='1')
+        and role_id=#{roleId,jdbcType=INTEGER}
+    </select>
+</mapper>

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.maiziyun.boss.dal.mapper.OperatorDOMapper">
+    <!-- 自动生成,请修改 BOSS_OPERATOR.xml -->
+    <resultMap id="BaseResultMap"  type="com.maiziyun.boss.dal.dataobject.OperatorDO">
+        <id column="ID" property="id" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="LEVEL" property="level" jdbcType="VARCHAR" javaType="String"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR" javaType="String"/>
+        <result column="ISVALID" property="isvalid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR" javaType="String"/>
+        <result column="REAL_NAME" property="realName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="EMPLOYEE_ID" property="employeeId" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="LAST_LOGIN_IP" property="lastLoginIp" jdbcType="VARCHAR" javaType="String"/>
+        <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="FIRST_LOGIN_TIME" property="firstLoginTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+    <resultMap id="MenuListDO"  type="com.maiziyun.boss.dal.resultmap.MenuListDO">
+        <result column="level" property="level"  javaType="String"/>
+        <result column="id" property="id"  javaType="String"/>
+        <result column="name" property="name"  javaType="String"/>
+        <result column="url" property="url"  javaType="String"/>
+        <result column="reload" property="reload"  javaType="String"/>
+        <result column="module_code" property="moduleCode"  javaType="String"/>
+        <result column="parent_code" property="parentCode"  javaType="String"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,LEVEL,STATUS,ISVALID,PASSWORD,REAL_NAME,USER_NAME,CREATE_TIME,EMPLOYEE_ID,UPDATE_TIME,LAST_LOGIN_IP,LAST_LOGIN_TIME,FIRST_LOGIN_TIME
+    </sql>
+
+
+    <!--插入表:BOSS_OPERATOR-->
+    <insert id="insert" >
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO BOSS_OPERATOR(
+        STATUS
+        ,PASSWORD
+        ,USER_NAME
+        ,REAL_NAME
+        ,CREATE_TIME
+        ,EMPLOYEE_ID
+        ,UPDATE_TIME
+        ,isvalid
+        )VALUES(
+        #{status,jdbcType=INTEGER}
+        , #{password,jdbcType=VARCHAR}
+        , #{userName,jdbcType=VARCHAR}
+        , #{realName,jdbcType=VARCHAR}
+        ,sysdate()
+        , #{employeeId,jdbcType=INTEGER}
+        ,sysdate()
+        ,'1'
+        )
+    </insert>
+
+    <!--更新表:BOSS_OPERATOR-->
+    <update id="update" >
+        UPDATE /*MS-BOSS-OPERATOR-UPDATE*/ BOSS_OPERATOR
+        SET
+        ROLE_ID = #{roleId,jdbcType=INTEGER}
+        ,STATUS = #{status,jdbcType=INTEGER}
+        ,PASSWORD = #{password,jdbcType=VARCHAR}
+        ,USER_NAME = #{userName,jdbcType=VARCHAR}
+        ,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+        ,EMPLOYEE_ID = #{employeeId,jdbcType=INTEGER}
+        ,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+        ,LAST_LOGIN_IP = #{lastLoginIp,jdbcType=VARCHAR}
+        ,LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP}
+        ,FIRST_LOGIN_TIME = #{firstLoginTime,jdbcType=TIMESTAMP}
+        WHERE
+        ID = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!--根据主键删除数据:BOSS_OPERATOR-->
+    <delete id="deleteByPrimary" >
+        DELETE /*MS-BOSS-OPERATOR-DELETEBYPRIMARY*/ FROM
+        BOSS_OPERATOR
+        WHERE
+        ID = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <!--根据主键获取数据:BOSS_OPERATOR-->
+    <select id="getByPrimary" resultMap="BaseResultMap">
+        SELECT /*MS-BOSS-OPERATOR-GETBYPRIMARY*/  <include refid="Base_Column_List" />
+        FROM BOSS_OPERATOR
+        WHERE
+        ID = #{id,jdbcType=INTEGER}
+    </select>
+
+    <!--根据用户名获取用户:BOSS_OPERATOR-->
+    <select id="getByUserName" resultMap="BaseResultMap">
+        SELECT /*MS-BOSS-OPERATOR-GETBYUSERNAME*/  <include refid="Base_Column_List" />
+        FROM BOSS_OPERATOR
+        WHERE
+        user_name = #{userName,jdbcType=VARCHAR}
+        and isvalid='1'
+    </select>
+
+    <!--查询出有效分页角色:BOSS_OPERATOR pageCount-->
+    <select id="getPageOperatorsCount"  resultType="int">
+        SELECT
+          COUNT(*) AS total 
+        FROM
+
+        BOSS_OPERATOR
+        WHERE isvalid='1'
+        <if test="nameQuery!=null and nameQuery!=''">
+            and user_name = #{nameQuery,jdbcType=VARCHAR}
+        </if>
+        <if test="statusQuery!=null and statusQuery!=''">
+            and status = #{statusQuery,jdbcType=VARCHAR}
+        </if>
+        <if test="realName!=null and realName!=''">
+            and realName=#{realName,jdbcType=VARCHAR}
+        </if>
+        <if test="roleId!=null">
+            and id in(
+            select operator_id from boss_operator_role
+            where role_id=#{roleId,jdbcType=INTEGER}
+            )
+        </if>
+        and user_name != #{loginUserName,jdbcType=VARCHAR}
+        
+    </select>
+    <!--查询出有效分页角色:BOSS_OPERATOR pageResult-->
+    <select id="getPageOperatorsResult"  resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM
+        BOSS_OPERATOR
+        WHERE isvalid='1'
+        <if test="nameQuery!=null and nameQuery!=''">
+            and user_name = #{nameQuery,jdbcType=VARCHAR}
+        </if>
+        <if test="statusQuery!=null and statusQuery!=''">
+            and status = #{statusQuery,jdbcType=VARCHAR}
+        </if>
+        <if test="realName!=null and realName!=''">
+            and realName=#{realName,jdbcType=VARCHAR}
+        </if>
+        <if test="roleId!=null">
+            and id in(
+            select /*MS-BOSS-OPERATOR-GETPAGEOPERATORS*/ operator_id from boss_operator_role
+            where role_id=#{roleId,jdbcType=INTEGER}
+            )
+        </if>
+        and user_name != #{loginUserName,jdbcType=VARCHAR}
+        order by update_time desc
+        limit #{startRow},#{limit}
+    </select>
+
+    <!--更新表:BOSS_OPERATOR-->
+    <delete id="deleteByIds" >
+        UPDATE /*MS-BOSS-OPERATOR-DELETEBYIDS*/ BOSS_OPERATOR
+        SET
+        isvalid='0',
+        update_time = sysdate()
+        where id in
+        <foreach collection="list" item="Id" index="index" open="(" close=")" separator=",">
+            #{Id,jdbcType=INTEGER}
+        </foreach>
+    </delete>
+
+    <!--更新表:BOSS_OPERATOR-->
+    <update id="updateById" >
+        UPDATE /*MS-BOSS-OPERATOR-UPDATEBYID*/ BOSS_OPERATOR
+        SET
+        update_time = sysdate()
+        <if test="userName!=null and userName!=''">
+            ,user_name=#{userName,jdbcType=VARCHAR}
+        </if>
+        <if test="password!=null and password!=''">
+            ,password=#{password,jdbcType=VARCHAR}
+        </if>
+        <if test="status!=null and status!=''">
+            ,status=#{status,jdbcType=VARCHAR}
+        </if>
+        <if test="realName!=null and realName!=''">
+            ,real_name=#{realName,jdbcType=VARCHAR}
+        </if>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!--查询某名称下有效用户是否存在:BOSS_OPERATOR-->
+    <select id="selectByUserNameValid" resultType="java.lang.Integer">
+        select /*MS-BOSS-OPERATOR-SELECTBYUSERNAMEVALID*/ id from BOSS_OPERATOR
+        where isvalid='1'
+        and user_name=#{userName,jdbcType=VARCHAR}
+        <if test="id!=null">
+            and id !=#{id,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <!--查询用户是否存在:BOSS_OPERATOR-->
+    <select id="getByUserNamePass" resultMap="BaseResultMap">
+        SELECT /*MS-BOSS-OPERATOR-GETBYUSERNAMEPASS*/  <include refid="Base_Column_List" />
+        FROM BOSS_OPERATOR
+        WHERE
+        user_name = #{userName,jdbcType=VARCHAR}
+        and password = #{password,jdbcType=VARCHAR}
+        and isvalid='1'
+    </select>
+
+    <!--查询菜单-->
+    <select id="getMenuList" resultMap="MenuListDO">
+        select /*MS-BOSS-OPERATOR-GETMENULIST*/ DISTINCT op.level,me.id,me.name,me.url,me.reload,me.module_code,me.parent_code
+        from boss_operator op inner join boss_operator_role opro on op.employee_id = opro.operator_id
+        INNER JOIN boss_role ro on opro.role_id=ro.id INNER JOIN boss_role_menu rome on opro.role_id=rome.role_id
+        INNER join boss_menu me on rome.menu_id = me.id
+        where
+        op.user_name = #{userName,jdbcType=VARCHAR}
+        and op.isvalid='1'
+        and ro.isvalid='1'
+    </select>
+</mapper>

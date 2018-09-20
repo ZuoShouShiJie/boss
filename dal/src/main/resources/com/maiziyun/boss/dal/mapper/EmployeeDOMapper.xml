@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.maiziyun.boss.dal.mapper.EmployeeDOMapper">
+    <!-- 自动生成,请修改 BOSS_EMPLOYEE.xml -->
+    <resultMap id="BaseResultMap"  type="com.maiziyun.boss.dal.dataobject.EmployeeDO">
+        <id column="ID" property="id" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="AGE" property="age" jdbcType="VARCHAR" javaType="String"/>
+        <result column="SEX" property="sex" jdbcType="VARCHAR" javaType="String"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR" javaType="String"/>
+        <result column="ADDRESS" property="address" jdbcType="VARCHAR" javaType="String"/>
+        <result column="ISVALID" property="isvalid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="NICK_NAME" property="nickName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="ENGLISH_NAME" property="englishName" jdbcType="VARCHAR" javaType="String"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,AGE,SEX,STATUS,ADDRESS,ISVALID,NICK_NAME,USER_NAME,CREATE_TIME,UPDATE_TIME,ENGLISH_NAME
+    </sql>
+
+
+    <!--插入表:BOSS_EMPLOYEE-->
+    <insert id="insert" >
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO BOSS_EMPLOYEE(
+            ID
+            ,AGE
+            ,SEX
+            ,STATUS
+            ,ADDRESS
+            ,NICK_NAME
+            ,USER_NAME
+            ,CREATE_TIME
+            ,UPDATE_TIME
+            ,ENGLISH_NAME
+        )VALUES(
+             #{id,jdbcType=INTEGER}
+            , #{age,jdbcType=INTEGER}
+            , #{sex,jdbcType=VARCHAR}
+            , #{status,jdbcType=INTEGER}
+            , #{address,jdbcType=VARCHAR}
+            , #{nickName,jdbcType=VARCHAR}
+            , #{userName,jdbcType=VARCHAR}
+            , #{createTime,jdbcType=TIMESTAMP}
+            , #{updateTime,jdbcType=TIMESTAMP}
+            , #{englishName,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!--更新表:BOSS_EMPLOYEE-->
+    <update id="update" >
+        UPDATE /*MS-BOSS-EMPLOYEE-UPDATE*/ BOSS_EMPLOYEE
+        SET
+            AGE             = #{age,jdbcType=INTEGER}
+            ,SEX             = #{sex,jdbcType=VARCHAR}
+            ,STATUS          = #{status,jdbcType=INTEGER}
+            ,ADDRESS         = #{address,jdbcType=VARCHAR}
+            ,NICK_NAME       = #{nickName,jdbcType=VARCHAR}
+            ,USER_NAME       = #{userName,jdbcType=VARCHAR}
+            ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+            ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+            ,ENGLISH_NAME    = #{englishName,jdbcType=VARCHAR}
+        WHERE
+            ID              = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!--根据主键删除数据:BOSS_EMPLOYEE-->
+    <delete id="deleteByPrimary" >
+        DELETE /*MS-BOSS-EMPLOYEE-DELETEBYPRIMARY*/ FROM
+            BOSS_EMPLOYEE
+        WHERE
+            ID = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <!--根据主键获取数据:BOSS_EMPLOYEE-->
+    <select id="getByPrimary" resultMap="BaseResultMap">
+        SELECT /*MS-BOSS-EMPLOYEE-GETBYPRIMARY*/  <include refid="Base_Column_List" />
+        FROM BOSS_EMPLOYEE
+        WHERE
+            ID = #{id,jdbcType=INTEGER}
+    </select>
+</mapper>

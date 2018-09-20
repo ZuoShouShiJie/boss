@@ -1,0 +1,90 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="BOSS_MENU" physicalName="BOSS_MENU" remark="BOSS_MENU">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:BOSS_MENU">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO BOSS_MENU(
+            ID
+            ,NAME
+            ,SORT
+            ,LEVEL
+            ,CREATE_TIME
+            ,MODULE_CODE
+            ,PARENT_CODE
+            ,UPDATE_TIME
+            ,DESCRIPTION
+        )VALUES(
+             #{id,jdbcType=INTEGER}
+            , #{name,jdbcType=VARCHAR}
+            , #{sort,jdbcType=INTEGER}
+            , #{level,jdbcType=INTEGER}
+            , #{createTime,jdbcType=TIMESTAMP}
+            , #{moduleCode,jdbcType=VARCHAR}
+            , #{parentCode,jdbcType=VARCHAR}
+            , #{updateTime,jdbcType=TIMESTAMP}
+            , #{description,jdbcType=VARCHAR}
+        )
+    </operation>
+
+    <operation name="update" paramtype="object" remark="更新表:BOSS_MENU">
+        UPDATE BOSS_MENU
+        SET
+            NAME            = #{name,jdbcType=VARCHAR}
+            ,SORT            = #{sort,jdbcType=INTEGER}
+            ,LEVEL           = #{level,jdbcType=INTEGER}
+            ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+            ,MODULE_CODE     = #{moduleCode,jdbcType=VARCHAR}
+            ,PARENT_CODE     = #{parentCode,jdbcType=VARCHAR}
+            ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+            ,DESCRIPTION     = #{description,jdbcType=VARCHAR}
+        WHERE
+            ID              = #{id,jdbcType=INTEGER}
+    </operation>
+
+    <operation name="deleteByPrimary" multiplicity="one" remark="根据主键删除数据:BOSS_MENU">
+        DELETE FROM
+            BOSS_MENU
+        WHERE
+            ID = #{id,jdbcType=INTEGER}
+    </operation>
+
+    <operation name="getByPrimary" multiplicity="one" remark="根据主键获取数据:BOSS_MENU">
+        SELECT *
+        FROM BOSS_MENU
+        WHERE
+            ID = #{id,jdbcType=INTEGER}
+    </operation>
+
+    <operation name="getMenuByRoleId" multiplicity="many" remark="根据角色号获取数据：BOSS_MENU">
+        select *
+        from boss_menu bm
+        where exists(
+            select '' from boss_role_menu brm where bm.id = brm.menu_id
+            and brm.role_id in
+            <foreach collection="list" item="roleId" index="index" open="(" close=")" separator=",">
+                #{roleId,jdbcType=INTEGER}
+            </foreach>
+        )
+        and bm.isvalid='1'
+    </operation>
+    
+    <operation name="getMenuParamsPage" multiplicity="paging" paging="MenuPageQuery" remark="获取菜单分页数据：BOSS_MENU">
+        SELECT *
+            FROM BOSS_MENU
+        WHERE
+            isvalid='1'
+            order by level, sort
+    </operation>
+
+    <operation name="getMenusList" multiplicity="many" remark="获取所有有效菜单列表：BOSS_MENU">
+        SELECT *
+        FROM BOSS_MENU
+        WHERE
+        isvalid='1'
+        order by level, sort
+    </operation>
+</table>

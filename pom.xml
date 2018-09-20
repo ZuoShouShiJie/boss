@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <groupId>com.maiziyun.boss</groupId>
+    <artifactId>boss-parent</artifactId>
+    <version>cz-1.0.4-SNAPSHOT</version>
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.solar</groupId>
+        <artifactId>sesame</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+
+    <description>boss parent</description>
+    <inceptionYear>2016</inceptionYear>
+
+    <modules>
+        <module>integration</module>
+        <module>biz</module>
+        <module>dal</module>
+        <module>common</module>
+        <module>web</module>
+        <module>facade</module>
+        <module>test</module>
+    </modules>
+
+    <properties>
+        <framework-core.version>1.0.0-SNAPSHOT</framework-core.version>
+        <common.version>cz-1.0.1-SNAPSHOT</common.version>
+        <cif.version>cz-1.0.1-SNAPSHOT</cif.version>
+        <mcm.version>1.0.0-SNAPSHOT</mcm.version>
+        <bcdc.version>1.0.0-SNAPSHOT</bcdc.version>
+        <fmd.version>1.0.0-SNAPSHOT</fmd.version>
+        <fadc.version>1.0.0-SNAPSHOT</fadc.version>
+        <fxs.version>1.0.0-SNAPSHOT</fxs.version>
+        <cardbin.version>1.0.0-SNAPSHOT</cardbin.version>
+        <ccdc.version>1.0.0-SNAPSHOT</ccdc.version>
+        <product.version>cz-1.0.2-SNAPSHOT</product.version>
+        <fts.version>cz-1.0.1-SNAPSHOT</fts.version>
+        <cms.version>1.0.0-20170618-SNAPSHOT</cms.version>
+        <mdc.version>1.0.0-20170731-SNAPSHOT</mdc.version>
+        <acs.version>1.0.0-20170731-SNAPSHOT</acs.version>
+        <fmgw.version>cz-1.0.1-SNAPSHOT</fmgw.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.solar.framework</groupId>
+                <artifactId>framework-core</artifactId>
+                <version>${framework-core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.solar.framework</groupId>
+                <artifactId>framework-template</artifactId>
+                <version>${framework-core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.solar.framework</groupId>
+                <artifactId>framework-cache</artifactId>
+                <version>${framework-core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.solar.framework</groupId>
+                <artifactId>framework-monitor</artifactId>
+                <version>${framework-core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.maiziyun</groupId>
+                <artifactId>common</artifactId>
+                <version>${common.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.maiziyun.boss</groupId>
+                <artifactId>boss-facade</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.maiziyun.boss</groupId>
+                <artifactId>boss-integration</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.maiziyun.boss</groupId>
+                <artifactId>boss-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.maiziyun.boss</groupId>
+                <artifactId>boss-dal</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.maiziyun.boss</groupId>
+                <artifactId>boss-biz</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.maiziyun.boss</groupId>
+                <artifactId>mcm-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+
+            <!-- for integration -->
+            <dependency>
+                <groupId>com.maiziyun.cif</groupId>
+                <artifactId>cif-facade</artifactId>
+                <version>${cif.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.maiziyun.merchant</groupId>
+                <artifactId>mcm-facade</artifactId>
+                <version>${mcm.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.maiziyun.payment</groupId>
+                <artifactId>bcdc-facade</artifactId>
+                <version>${bcdc.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.maiziyun.fmd</groupId>
+                <artifactId>fmd-facade</artifactId>
+                <version>${fmd.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.maiziyun.fund</groupId>
+                <artifactId>fadc-facade</artifactId>
+                <version>${fadc.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.maiziyun.payment</groupId>
+                <artifactId>fxs-facade</artifactId>
+                <version>${fxs.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.maiziyun.payment</groupId>
+                <artifactId>cardbin-facade</artifactId>
+                <version>${cardbin.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.maiziyun.payment</groupId>
+                <artifactId>ccdc-facade</artifactId>
+                <version>${ccdc.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.maiziyun.product</groupId>
+                <artifactId>product-facade</artifactId>
+                <version>${product.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.maiziyun.fmgw</groupId>
+                <artifactId>fmgw-facade</artifactId>
+                <version>${fmgw.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.maiziyun.acs</groupId>
+                <artifactId>acs-facade</artifactId>
+                <version>${acs.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.maiziyun.fund</groupId>
+                <artifactId>trade-facade</artifactId>
+                <version>${fts.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.maiziyun.cms</groupId>
+                <artifactId>cms-facade</artifactId>
+                <version>${cms.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.maiziyun.mdc</groupId>
+                <artifactId>mdc-facade</artifactId>
+                <version>${mdc.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

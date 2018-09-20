@@ -1,0 +1,167 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="BOSS_OPERATOR" physicalName="BOSS_OPERATOR" remark="BOSS_OPERATOR">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:BOSS_OPERATOR">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO BOSS_OPERATOR(
+        STATUS
+        ,PASSWORD
+        ,USER_NAME
+        ,REAL_NAME
+        ,CREATE_TIME
+        ,EMPLOYEE_ID
+        ,UPDATE_TIME
+        ,isvalid
+        )VALUES(
+        #{status,jdbcType=INTEGER}
+        , #{password,jdbcType=VARCHAR}
+        , #{userName,jdbcType=VARCHAR}
+        , #{realName,jdbcType=VARCHAR}
+        ,sysdate()
+        , #{employeeId,jdbcType=INTEGER}
+        ,sysdate()
+        ,'1'
+        )
+    </operation>
+
+    <operation name="update" paramtype="object" remark="更新表:BOSS_OPERATOR">
+        UPDATE BOSS_OPERATOR
+        SET
+        ROLE_ID = #{roleId,jdbcType=INTEGER}
+        ,STATUS = #{status,jdbcType=INTEGER}
+        ,PASSWORD = #{password,jdbcType=VARCHAR}
+        ,USER_NAME = #{userName,jdbcType=VARCHAR}
+        ,CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+        ,EMPLOYEE_ID = #{employeeId,jdbcType=INTEGER}
+        ,UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+        ,LAST_LOGIN_IP = #{lastLoginIp,jdbcType=VARCHAR}
+        ,LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP}
+        ,FIRST_LOGIN_TIME = #{firstLoginTime,jdbcType=TIMESTAMP}
+        WHERE
+        ID = #{id,jdbcType=INTEGER}
+    </operation>
+
+    <operation name="deleteByPrimary" multiplicity="one" remark="根据主键删除数据:BOSS_OPERATOR">
+        DELETE FROM
+        BOSS_OPERATOR
+        WHERE
+        ID = #{id,jdbcType=INTEGER}
+    </operation>
+
+    <operation name="getByPrimary" multiplicity="one" remark="根据主键获取数据:BOSS_OPERATOR">
+        SELECT *
+        FROM BOSS_OPERATOR
+        WHERE
+        ID = #{id,jdbcType=INTEGER}
+    </operation>
+
+    <operation name="getByUserName" multiplicity="one" remark="根据用户名获取用户:BOSS_OPERATOR">
+        SELECT *
+        FROM BOSS_OPERATOR
+        WHERE
+        user_name = #{userName,jdbcType=VARCHAR}
+        and isvalid='1'
+    </operation>
+
+    <!--分页查询-->
+    <operation name="getPageOperators" multiplicity="paging" paging="OperatorPageQuery"
+               remark="查询出有效分页角色:BOSS_OPERATOR">
+        SELECT *
+        FROM
+        BOSS_OPERATOR
+        WHERE isvalid='1'
+        <if test="nameQuery!=null and nameQuery!=''">
+            and user_name = #{nameQuery,jdbcType=VARCHAR}
+        </if>
+        <if test="statusQuery!=null and statusQuery!=''">
+            and status = #{statusQuery,jdbcType=VARCHAR}
+        </if>
+        <if test="realName!=null and realName!=''">
+            and realName=#{realName,jdbcType=VARCHAR}
+        </if>
+        <if test="roleId!=null">
+            and id in(
+            select operator_id from boss_operator_role
+            where role_id=#{roleId,jdbcType=INTEGER}
+            )
+        </if>
+        and user_name != #{loginUserName,jdbcType=VARCHAR}
+        order by update_time desc
+    </operation>
+
+    <!--根据id删除人员-->
+    <operation name="deleteByIds" multiplicity="many" remark="更新表:BOSS_OPERATOR">
+        UPDATE BOSS_OPERATOR
+        SET
+        isvalid='0',
+        update_time = sysdate()
+        where id in
+        <foreach collection="list" item="Id" index="index" open="(" close=")" separator=",">
+            #{Id,jdbcType=INTEGER}
+        </foreach>
+    </operation>
+
+    <!--修改操作员信息-->
+    <operation name="updateById" paramtype="object" remark="更新表:BOSS_OPERATOR">
+        UPDATE BOSS_OPERATOR
+        SET
+        update_time = sysdate()
+        <if test="userName!=null and userName!=''">
+            ,user_name=#{userName,jdbcType=VARCHAR}
+        </if>
+        <if test="password!=null and password!=''">
+            ,password=#{password,jdbcType=VARCHAR}
+        </if>
+        <if test="status!=null and status!=''">
+            ,status=#{status,jdbcType=VARCHAR}
+        </if>
+        <if test="realName!=null and realName!=''">
+            ,real_name=#{realName,jdbcType=VARCHAR}
+        </if>
+        where id = #{id,jdbcType=INTEGER}
+    </operation>
+
+    <!--查询某有效的操作员是否存在-->
+    <operation name="selectByUserNameValid" resulttype="java.lang.Integer" remark="查询某名称下有效用户是否存在:BOSS_OPERATOR">
+        select id from BOSS_OPERATOR
+        where isvalid='1'
+        and user_name=#{userName,jdbcType=VARCHAR}
+        <if test="id!=null">
+            and id !=#{id,jdbcType=INTEGER}
+        </if>
+    </operation>
+
+    <operation name="getByUserNamePass" multiplicity="one" remark="查询用户是否存在:BOSS_OPERATOR">
+        SELECT *
+        FROM BOSS_OPERATOR
+        WHERE
+        user_name = #{userName,jdbcType=VARCHAR}
+        and password = #{password,jdbcType=VARCHAR}
+        and isvalid='1'
+    </operation>
+
+    <operation name="getMenuList" multiplicity="many" resultmap="MenuListDO" remark="查询菜单">
+        select DISTINCT op.level,me.id,me.name,me.url,me.reload,me.module_code,me.parent_code
+        from boss_operator op inner join boss_operator_role opro on op.employee_id = opro.operator_id
+        INNER JOIN boss_role ro on opro.role_id=ro.id INNER JOIN boss_role_menu rome on opro.role_id=rome.role_id
+        INNER join boss_menu me on rome.menu_id = me.id
+        where
+        op.user_name = #{userName,jdbcType=VARCHAR}
+        and op.isvalid='1'
+        and ro.isvalid='1'
+    </operation>
+    <resultmap name="MenuListDO" type="MenuListDO">
+        <column name="level" javatype="String" jdbctype="VARCHAR" remark=""></column>
+        <column name="id" javatype="String" jdbctype="VARCHAR" remark=""></column>
+        <column name="name" javatype="String" jdbctype="VARCHAR" remark=""></column>
+        <column name="url" javatype="String" jdbctype="VARCHAR" remark=""></column>
+        <column name="reload" javatype="String" jdbctype="VARCHAR" remark=""></column>
+        <column name="module_code" javatype="String" jdbctype="VARCHAR" remark=""></column>
+        <column name="parent_code" javatype="String" jdbctype="VARCHAR" remark=""></column>
+    </resultmap>
+
+</table>

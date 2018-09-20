@@ -1,0 +1,121 @@
+<!DOCTYPE table SYSTEM "../config/table-config-1.0.dtd">
+<table sqlname="BOSS_ROLE" physicalName="BOSS_ROLE" remark="BOSS_ROLE">
+    <!--  特殊字符说明  &lt;&gt;   <> -->
+
+    <operation name="insert" paramtype="object" remark="插入表:BOSS_ROLE">
+        <selectKey resultType="int" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO BOSS_ROLE(
+            describe_context
+            ,ROLE_NAME
+            ,ROLE_CODE
+            ,CREATE_TIME
+            ,UPDATE_TIME
+            ,isvalid
+        )VALUES(
+            #{describeContext,jdbcType=VARCHAR}
+            , #{roleName,jdbcType=VARCHAR}
+            , #{roleCode,jdbcType=VARCHAR}
+            ,sysdate()
+            ,sysdate()
+            ,'1'
+        )
+    </operation>
+
+    <operation name="update" paramtype="object" remark="更新表:BOSS_ROLE">
+        UPDATE BOSS_ROLE
+        SET
+            DESC            = #{desc,jdbcType=VARCHAR}
+            ,ROLE_NAME       = #{roleName,jdbcType=VARCHAR}
+            ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+            ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+        WHERE
+            ID              = #{id,jdbcType=INTEGER}
+    </operation>
+
+    <operation name="deleteByPrimary" multiplicity="one" remark="根据主键删除数据:BOSS_ROLE">
+        DELETE FROM
+            BOSS_ROLE
+        WHERE
+            ID = #{id,jdbcType=INTEGER}
+    </operation>
+
+    <operation name="getByPrimary" multiplicity="one" remark="根据主键获取数据:BOSS_ROLE">
+        SELECT *
+        FROM BOSS_ROLE
+        WHERE
+            ID = #{id,jdbcType=INTEGER}
+    </operation>
+
+    <!--<resultmap name="rolesByName" type="RoleNameMap">-->
+        <!--<column name="operator_id" javatype="java.lang.Integer" jdbctype="INTEGER" remark="操作员编号"/>-->
+        <!--<column name="user_name" javatype="String" jdbctype="VARCHAR" remark="用户名"/>-->
+        <!--<column name="role_name" javatype="String" jdbctype="VARCHAR" remark="角色名称"/>-->
+        <!--<column name="role_code" javatype="String" jdbctype="VARCHAR" remark="角色缩写编号"/>-->
+    <!--</resultmap>-->
+
+    <operation name="getRolesByOperatorName" multiplicity="many" remark="根据用户名获取对应的权限信息:BOSS_ROLE">
+        SELECT
+            BR.id,BR.role_name,BR.role_code,BR.describe_context,BR.create_time,BR.update_time
+        FROM
+            boss_operator_role BOR , boss_role BR, boss_operator bo
+        WHERE BOR.ROLE_ID=br.id
+            and bo.id = bor.operator_id
+            and bo.user_name= #{userName,jdbcType=VARCHAR}
+    </operation>
+
+    <operation name="getPageRoles" multiplicity="paging" paging="RolePageQuery" remark="查询出有效分页角色:BOSS_ROLE">
+        SELECT *
+        FROM
+        BOSS_ROLE
+        WHERE isvalid='1'
+        <if test="nameQuery!=null and nameQuery!=''">
+            and role_name = #{nameQuery,jdbcType=VARCHAR}
+        </if>
+        <if test="codeQuery!=null and codeQuery!=''">
+            and role_code = #{codeQuery,jdbcType=VARCHAR}
+        </if>
+        order by update_time desc
+    </operation>
+
+    <operation name="getListRoles" multiplicity="many" remark="查询出所有角色列表:BOSS_ROLE">
+        SELECT *
+        FROM
+        BOSS_ROLE
+        WHERE isvalid='1'
+        order by update_time desc
+    </operation>
+
+
+    <operation name="updateSelective" paramtype="object" remark="更新表:BOSS_ROLE">
+        UPDATE BOSS_ROLE
+        SET
+        <if test="roleName!=null and roleName!=''">
+            ROLE_NAME       = #{roleName,jdbcType=VARCHAR},
+
+        </if>
+        <if test="roleCode!=null and roleCode!=''">
+            ROLE_CODE       = #{roleCode,jdbcType=VARCHAR},
+
+        </if>
+        <if test="describeContext!=null and describeContext!=''">
+            DESCRIBE_CONTEXT = #{describeContext,jdbcType=VARCHAR},
+        </if>
+            UPDATE_TIME     = sysdate()
+    WHERE
+        ID= #{id,jdbcType=INTEGER}
+    </operation>
+
+    <operation name="deleteRole" multiplicity="many" remark="更新表:BOSS_ROLE">
+        UPDATE BOSS_ROLE
+        SET
+        isvalid = '0',
+        UPDATE_TIME = sysdate()
+        WHERE ID in
+        <foreach collection="list" item="Id" index="index" open="(" close=")" separator=",">
+            #{Id,jdbcType=INTEGER}
+        </foreach>
+    </operation>
+</table>

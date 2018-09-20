@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://mybatis.org/schema/mybatis-spring
+       http://mybatis.org/schema/mybatis-spring.xsd"
+       default-autowire="byName">
+
+    <context:property-placeholder
+            file-encoding="UTF-8"
+            ignore-unresolvable="true"
+            ignore-resource-not-found="true" location="file:${user.home}/config/maiziyun/boss/jdbc.properties"/>
+
+
+    <context:component-scan base-package="com.maiziyun.boss.dal"/>
+
+    <!-- enable autowire -->
+    <context:annotation-config/>
+
+    <bean id="boss.dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          destroy-method="close">
+        <property name="url" value="${boss.jdbc.url}"/>
+        <property name="username" value="${boss.jdbc.username}"/>
+        <property name="password" value="${boss.jdbc.passwd}"/>
+        <property name="driverClassName" value="${boss.jdbc.driverClassName}"/>
+        <property name="filters" value="${boss.druid.filters}"/>
+
+        <property name="maxActive" value="${boss.maxActive}"/>
+        <property name="initialSize" value="${boss.initialSize}"/>
+        <property name="minIdle" value="${boss.minIdle}"/>
+
+        <property name="timeBetweenEvictionRunsMillis" value="${boss.timeBetweenEvictionRunsMillis}"/>
+        <property name="minEvictableIdleTimeMillis" value="${boss.minEvictableIdleTimeMillis}"/>
+
+        <property name="validationQuery" value="${boss.validationQuery}"/>
+        <property name="testWhileIdle" value="${boss.testWhileIdle}"/>
+        <property name="testOnBorrow" value="${boss.testOnBorrow}"/>
+        <property name="testOnReturn" value="${boss.testOnReturn}"/>
+
+        <property name="maxOpenPreparedStatements" value="${boss.maxOpenPreparedStatements}"/>
+        <property name="poolPreparedStatements" value="${boss.poolPreparedStatements}"/>
+
+        <property name="removeAbandoned" value="${boss.removeAbandoned}"/>
+        <property name="removeAbandonedTimeout" value="${boss.removeAbandonedTimeout}"/>
+        <property name="logAbandoned" value="${boss.logAbandoned}"/>
+
+        <property name="defaultAutoCommit" value="${boss.defaultAutoCommit}"/>
+    </bean>
+
+    <bean id="boss.transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="transactionManager" ref="boss.transactionManager"></property>
+    </bean>
+
+    <bean id="boss.transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="boss.dataSource" />
+    </bean>
+
+
+    <bean id="boss.sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="boss.dataSource" />
+        <property name="mapperLocations" value="classpath*:com/maiziyun/boss/dal/mapper/*.xml"/>
+    </bean>
+
+    <bean id="boss.SqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="boss.sqlSessionFactory" />
+    </bean>
+
+
+    <mybatis:scan base-package="com.maiziyun.boss.dal.mapper" template-ref="boss.SqlSessionTemplate"/>
+
+
+
+</beans>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+   ">
+
+    <!--<import resource="classpath*:sprboss-redis.xml.xml"/>-->
+
+    <!-- 扫描注解 -->
+    <context:component-scan base-package="com.maiziyun.boss.*" />
+
+    <context:property-placeholder
+            file-encoding="UTF-8"
+            ignore-unresolvable="true"
+            ignore-resource-not-found="true" location="file:${user.home}/config/maiziyun/dubbo.properties"/>
+
+    <dubbo:application name="${dubbo.application.name}"/>
+
+    <dubbo:consumer filter="consumerTraceNoFilter" retries="0" timeout="${dubbo.consumer.timeout}" check="false" cluster="failfast" version="${dubbo.consumer.version}"/>
+
+    <dubbo:protocol name="${dubbo.protocol.name}" port="${dubbo.protocol.port}"/>
+
+    <dubbo:registry address="${dubbo.registry.address}" />
+
+    <dubbo:provider filter="providerTraceNoFilter" version="${dubbo.provider.version}"/>
+
+    <!--service-->
+
+    <import resource="classpath*:spring/boss-service-application.xml"/>
+
+   <!-- <util:properties id="configProperties" location="classpath*:config/freemarker.properties"></util:properties>-->
+
+</beans>

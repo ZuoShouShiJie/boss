@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <groupId>com.maiziyun.boss</groupId>
+    <artifactId>boss-biz</artifactId>
+    <modelVersion>4.0.0</modelVersion>
+
+    <packaging>jar</packaging>
+    <name>${project.artifactId}</name>
+
+    <description>boss biz</description>
+    <inceptionYear>2016</inceptionYear>
+
+    <parent>
+        <groupId>com.maiziyun.boss</groupId>
+        <artifactId>boss-parent</artifactId>
+        <version>cz-1.0.4-SNAPSHOT</version>
+    </parent>
+
+    <properties>
+        <framework-core.version>1.0.0-SNAPSHOT</framework-core.version>
+        <common.version>1.0.0-SNAPSHOT</common.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.solar.framework</groupId>
+            <artifactId>framework-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.solar.framework</groupId>
+            <artifactId>framework-template</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.solar.framework</groupId>
+            <artifactId>framework-cache</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.maiziyun</groupId>
+            <artifactId>common</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- commons utils -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <!-- 把commons-log日志重定向到slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- 把log4j日志重定向到slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- 把log4j日志重定向到commons log -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-jcl</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--poi-->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-codec</groupId>
+                    <artifactId>commons-codec</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.maiziyun.boss</groupId>
+            <artifactId>boss-facade</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.maiziyun.boss</groupId>
+            <artifactId>boss-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.maiziyun.boss</groupId>
+            <artifactId>boss-dal</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.maiziyun.boss</groupId>
+            <artifactId>boss-integration</artifactId>
+        </dependency>
+
+        <!--引用外部接口-->
+        <dependency>
+            <groupId>com.maiziyun.cif</groupId>
+            <artifactId>cif-facade</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.maiziyun.fund</groupId>
+            <artifactId>trade-facade</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.maiziyun.payment</groupId>
+            <artifactId>bcdc-facade</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.maiziyun.product</groupId>
+            <artifactId>product-facade</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.maiziyun.acs</groupId>
+            <artifactId>acs-facade</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.maiziyun.fmd</groupId>
+            <artifactId>fmd-facade</artifactId>
+        </dependency>
+        <!--引用外部接口结束-->
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.maiziyun.cms</groupId>
+            <artifactId>cms-facade</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.maiziyun.mdc</groupId>
+            <artifactId>mdc-facade</artifactId>
+        </dependency>
+
+    </dependencies>
+</project>

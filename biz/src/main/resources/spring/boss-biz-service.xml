@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:template="http://code.solar.com/schema/template"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.solar.com/schema/template
+       http://code.solar.com/schema/template/solar-template.xsd">
+
+    <!--其中id为对应实现类的beanId-->
+    <!--<template:manager id="boss.bossLoginService" desc="操作员登录">
+        <template:processor name="login" desc="boss用户登录">
+            <template:action ref="boss.LoginDataValidateAction" desc="验证所传参数"/>
+            <template:action ref="boss.LoginPrepareUser" desc="准备用户数据"/>
+            <template:action ref="boss.LoginBizValidateAction" desc="验证用户数据"/>
+        </template:processor>
+    </template:manager>-->
+
+</beans>

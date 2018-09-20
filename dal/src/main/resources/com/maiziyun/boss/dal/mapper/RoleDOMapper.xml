@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.maiziyun.boss.dal.mapper.RoleDOMapper">
+    <!-- 自动生成,请修改 BOSS_ROLE.xml -->
+    <resultMap id="BaseResultMap"  type="com.maiziyun.boss.dal.dataobject.RoleDO">
+        <id column="ID" property="id" jdbcType="INTEGER" javaType="Integer"/>
+        <result column="ISVALID" property="isvalid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="ROLE_CODE" property="roleCode" jdbcType="VARCHAR" javaType="String"/>
+        <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="DESCRIBE_CONTEXT" property="describeContext" jdbcType="VARCHAR" javaType="String"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ID,ISVALID,ROLE_CODE,ROLE_NAME,CREATE_TIME,UPDATE_TIME,DESCRIBE_CONTEXT
+    </sql>
+
+
+    <!--插入表:BOSS_ROLE-->
+    <insert id="insert" >
+        <selectKey resultType="int" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO BOSS_ROLE(
+            describe_context
+            ,ROLE_NAME
+            ,ROLE_CODE
+            ,CREATE_TIME
+            ,UPDATE_TIME
+            ,isvalid
+        )VALUES(
+            #{describeContext,jdbcType=VARCHAR}
+            , #{roleName,jdbcType=VARCHAR}
+            , #{roleCode,jdbcType=VARCHAR}
+            ,sysdate()
+            ,sysdate()
+            ,'1'
+        )
+    </insert>
+
+    <!--更新表:BOSS_ROLE-->
+    <update id="update" >
+        UPDATE /*MS-BOSS-ROLE-UPDATE*/ BOSS_ROLE
+        SET
+            DESC            = #{desc,jdbcType=VARCHAR}
+            ,ROLE_NAME       = #{roleName,jdbcType=VARCHAR}
+            ,CREATE_TIME     = #{createTime,jdbcType=TIMESTAMP}
+            ,UPDATE_TIME     = #{updateTime,jdbcType=TIMESTAMP}
+        WHERE
+            ID              = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!--根据主键删除数据:BOSS_ROLE-->
+    <delete id="deleteByPrimary" >
+        DELETE /*MS-BOSS-ROLE-DELETEBYPRIMARY*/ FROM
+            BOSS_ROLE
+        WHERE
+            ID = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <!--根据主键获取数据:BOSS_ROLE-->
+    <select id="getByPrimary" resultMap="BaseResultMap">
+        SELECT /*MS-BOSS-ROLE-GETBYPRIMARY*/  <include refid="Base_Column_List" />
+        FROM BOSS_ROLE
+        WHERE
+            ID = #{id,jdbcType=INTEGER}
+    </select>
+
+    <!--根据用户名获取对应的权限信息:BOSS_ROLE-->
+    <select id="getRolesByOperatorName" resultMap="BaseResultMap">
+        SELECT
+            BR.id,BR.role_name,BR.role_code,BR.describe_context,BR.create_time,BR.update_time
+        FROM
+            boss_operator_role BOR , boss_role BR, boss_operator bo
+        WHERE BOR.ROLE_ID=br.id
+            and bo.id = bor.operator_id
+            and bo.user_name= #{userName,jdbcType=VARCHAR}
+    </select>
+
+    <!--查询出有效分页角色:BOSS_ROLE pageCount-->
+    <select id="getPageRolesCount"  resultType="int">
+        SELECT
+          COUNT(*) AS total 
+        FROM
+
+        BOSS_ROLE
+        WHERE isvalid='1'
+        <if test="nameQuery!=null and nameQuery!=''">
+            and role_name = #{nameQuery,jdbcType=VARCHAR}
+        </if>
+        <if test="codeQuery!=null and codeQuery!=''">
+            and role_code = #{codeQuery,jdbcType=VARCHAR}
+        </if>
+        
+    </select>
+    <!--查询出有效分页角色:BOSS_ROLE pageResult-->
+    <select id="getPageRolesResult"  resultMap="BaseResultMap">
+        SELECT /*MS-BOSS-ROLE-GETPAGEROLES*/  <include refid="Base_Column_List" />
+        FROM
+        BOSS_ROLE
+        WHERE isvalid='1'
+        <if test="nameQuery!=null and nameQuery!=''">
+            and role_name = #{nameQuery,jdbcType=VARCHAR}
+        </if>
+        <if test="codeQuery!=null and codeQuery!=''">
+            and role_code = #{codeQuery,jdbcType=VARCHAR}
+        </if>
+        order by update_time desc
+        limit #{startRow},#{limit}
+    </select>
+
+    <!--查询出所有角色列表:BOSS_ROLE-->
+    <select id="getListRoles" resultMap="BaseResultMap">
+        SELECT /*MS-BOSS-ROLE-GETLISTROLES*/  <include refid="Base_Column_List" />
+        FROM
+        BOSS_ROLE
+        WHERE isvalid='1'
+        order by update_time desc
+    </select>
+
+    <!--更新表:BOSS_ROLE-->
+    <update id="updateSelective" >
+        UPDATE /*MS-BOSS-ROLE-UPDATESELECTIVE*/ BOSS_ROLE
+        SET
+        <if test="roleName!=null and roleName!=''">
+            ROLE_NAME       = #{roleName,jdbcType=VARCHAR},
+        </if>
+        <if test="roleCode!=null and roleCode!=''">
+            ROLE_CODE       = #{roleCode,jdbcType=VARCHAR},
+        </if>
+        <if test="describeContext!=null and describeContext!=''">
+            DESCRIBE_CONTEXT = #{describeContext,jdbcType=VARCHAR},
+        </if>
+            UPDATE_TIME     = sysdate()
+    WHERE
+        ID= #{id,jdbcType=INTEGER}
+    </update>
+
+    <!--更新表:BOSS_ROLE-->
+    <delete id="deleteRole" >
+        UPDATE /*MS-BOSS-ROLE-DELETEROLE*/ BOSS_ROLE
+        SET
+        isvalid = '0',
+        UPDATE_TIME = sysdate()
+        WHERE ID in
+        <foreach collection="list" item="Id" index="index" open="(" close=")" separator=",">
+            #{Id,jdbcType=INTEGER}
+        </foreach>
+    </delete>
+</mapper>
